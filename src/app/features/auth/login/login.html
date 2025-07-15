@@ -1,0 +1,21 @@
+<div class="container mt-5" style="max-width: 400px;">
+  <h3 class="mb-4">Giriş Yap</h3>
+
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div class="mb-3">
+      <label for="username" class="form-label">Kullanıcı Adı</label>
+      <input type="text" class="form-control" id="username" formControlName="username" />
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Şifre</label>
+      <input type="password" class="form-control" id="password" formControlName="password" />
+    </div>
+
+    <button class="btn btn-primary w-100" [disabled]="form.invalid">Giriş</button>
+  </form>
+
+  <div *ngIf="error" class="alert alert-danger mt-3">
+    {{ error }}
+  </div>
+</div>

@@ -1,9 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-modal',
+  standalone: true,
+  imports: [CommonModule],
   template: `
-    <div class="modal fade show d-block" tabindex="-1" [ngStyle]="{ backgroundColor: 'rgba(0,0,0,0.5)' }">
+    <div
+      class="modal fade show d-block"
+      tabindex="-1"
+      [ngStyle]="{ backgroundColor: 'rgba(0,0,0,0.5)' }"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -19,6 +26,6 @@ import { Component, Input } from '@angular/core';
   `
 })
 export class ModalComponent {
-  @Input() title = '';
   visible = true;
+  title = '';
 }

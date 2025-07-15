@@ -6,6 +6,7 @@ import { CoreModule } from './core/core-module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
+import { Login } from './features/auth/login/login';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { App } from './app';
     AppRoutingModule,
     CoreModule,
     SharedModule,
-    LayoutModule
+    LayoutModule,
+    Login
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
