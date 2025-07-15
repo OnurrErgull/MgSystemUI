@@ -1,21 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Layout } from './layout/layout';
 import { Header } from './header/header';
 import { Sidebar } from './sidebar/sidebar';
-import { Layout } from './layout/layout';
-import { AppRoutingModule } from "../app-routing-module";
 import { RouterModule } from '@angular/router';
 
-
-
 @NgModule({
-  declarations: [
-  ],
-  imports: [
-    CommonModule,
-    Header,
-    AppRoutingModule,
-    RouterModule
-]
+  declarations: [Layout, Sidebar],
+  imports: [CommonModule, RouterModule,Header],
+  exports: [Layout]
 })
-export class LayoutModule { }
+export class LayoutModule {}
