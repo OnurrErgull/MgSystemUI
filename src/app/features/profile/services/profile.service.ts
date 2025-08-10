@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
 import { Profile } from "../models/profile.model";
 import { HttpClient } from "@angular/common/http";
+import { environment } from '@src/environments/environment';
 
 @Injectable({ providedIn: "root" })
 export class ProfileService {

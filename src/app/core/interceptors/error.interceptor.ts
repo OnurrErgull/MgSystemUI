@@ -1,7 +1,11 @@
-import { HttpInterceptorFn } from "@angular/common/http";
-import { throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { HttpInterceptorFn } from '@angular/common/http';
+import { catchError, throwError } from 'rxjs';
 
-export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  return next(req).pipe(catchError((err) => throwError(() => err.error)));
-};
+export const errorInterceptor: HttpInterceptorFn = (req, next) =>
+  next(req).pipe(
+    catchError(err => {
+      // Burada global toast/telemetry
+      console.error('[API ERROR]', err);
+      return throwError(() => err);
+    })
+  );

@@ -13,6 +13,7 @@ import { apiInterceptor } from "./core/interceptors/api.interceptor";
 import { tokenInterceptor } from "./core/interceptors/token.interceptor";
 import { errorInterceptor } from "./core/interceptors/error.interceptor";
 import { EMPTY } from "rxjs";
+import { authInterceptor } from "./core/interceptors/auth.interceptor";
 
 export function initAuth(jwtService: JwtService, userService: UserService) {
   return () => (jwtService.getToken() ? userService.getCurrentUser() : EMPTY);
@@ -22,7 +23,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([apiInterceptor, tokenInterceptor, errorInterceptor]),
+      // withInterceptors([apiInterceptor, tokenInterceptor, errorInterceptor]),
+      withInterceptors([authInterceptor, errorInterceptor]),
+
     ),
     provideAppInitializer(() => {
       const initializerFn = initAuth(inject(JwtService), inject(UserService));
@@ -30,3 +33,16 @@ export const appConfig: ApplicationConfig = {
     }),
   ],
 };
+
+
+
+
+// import { ApplicationConfig, provideHttpClient, withInterceptors } from '@angular/common/http';
+// import { authInterceptor } from './core/interceptors/auth.interceptor';
+// import { errorInterceptor } from './core/interceptors/error.interceptor';
+
+// export const appConfig: ApplicationConfig = {
+//   providers: [
+//     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
+//   ],
+// };

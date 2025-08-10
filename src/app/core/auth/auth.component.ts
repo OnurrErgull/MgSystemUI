@@ -1,52 +1,60 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './services/auth.service'; 
+import { firstValueFrom } from 'rxjs';
+
+import { AuthService, LoginInput, Profile } from './services/auth.service';
+import { MutationStore } from '../store/mutation.store';
+import { QueryStore } from '../store/query.store';
 
 @Component({
   selector: 'app-auth-page',
   standalone: true,
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.css',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ]
+  styleUrls: ['./auth.component.css'], // <-- styleUrls (çoğul)
+  imports: [CommonModule, ReactiveFormsModule],
+  // providers: [MutationStore, QueryStore]  // <-- GEREK YOK (generic farklarından ötürü)
 })
 export class AuthComponent {
-  private fb = inject(FormBuilder).nonNullable; // nonNullable kullandık
+  private fb = inject(FormBuilder).nonNullable;
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  isLoading = signal<boolean>(false);
+  // İstersen tut, ama butonda login.loading() kullanacağız
   errorMessage = signal<string | null>(null);
 
+  // Email + Password formu
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  onSubmit(): void {
+  // Store'lar — component içinde oluştur (en temiz yol)
+  login = new MutationStore<LoginInput, { token: string }>();
+  profile = new QueryStore<Profile>(60_000);
+
+  async onSubmit(): Promise<void> {
     this.loginForm.markAllAsTouched();
     if (this.loginForm.invalid) return;
 
-    this.isLoading.set(true);
-    this.errorMessage.set(null);
+    const raw = this.loginForm.getRawValue();
+    // API tarafında LoginInput { username, password } ise email’i username’e eşle
+    const credentials: LoginInput = { username: raw.email!, password: raw.password! };
 
-    const credentials = this.loginForm.getRawValue();
+    await this.login
+      .call((input) => firstValueFrom(this.authService.login(input)), credentials)
+      .then((res) => {
+        this.authService.saveToken(res.token);
+        // Profilini çekip anasayfaya geçelim (opsiyonel)
+        return this.loadProfile().then(() => this.router.navigateByUrl('/'));
+      })
+      .catch((err) => {
+        this.errorMessage.set(err?.message ?? 'Login failed');
+      });
+  }
 
-    this.authService.login(credentials).subscribe({
-      next: () => {
-        // Başarılı giriş sonrası Admin paneline yönlendir
-        this.router.navigate(['/admin']);
-      },
-      error: (err) => {
-        this.errorMessage.set(err.message || 'Bilinmeyen bir hata oluştu.');
-      },
-      complete: () => {
-        this.isLoading.set(false);
-      }
-    });
+  async loadProfile(): Promise<void> {
+    await this.profile.load('me', () => firstValueFrom(this.authService.me()));
   }
 }

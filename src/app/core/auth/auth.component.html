@@ -4,38 +4,44 @@
     <p>Hesabınıza erişmek için bilgilerinizi girin.</p>
 
     @if (errorMessage()) {
-      <div class="alert error">{{ errorMessage() }}</div>
+    <div class="alert error">{{ errorMessage() }}</div>
     }
+    @if (login.error()) {
+    <div class="alert error">{{ login.error() }}</div>
+    }
+
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="form-group">
         <label for="email">E-posta</label>
-        <input id="email" type="email" formControlName="email" placeholder="kullanici@test.com" [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"/>
+        <input id="email" type="email" formControlName="email" placeholder="kullanici@test.com"
+          [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
         @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
-          <small class="validation-error">E-posta adresi zorunludur.</small>
+        <small class="validation-error">E-posta adresi zorunludur.</small>
         }
         @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
-          <small class="validation-error">Lütfen geçerli bir e-posta adresi girin.</small>
+        <small class="validation-error">Lütfen geçerli bir e-posta adresi girin.</small>
         }
       </div>
 
       <div class="form-group">
         <label for="password">Şifre</label>
-        <input id="password" type="password" formControlName="password" placeholder="Şifre: 123456" [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"/>
+        <input id="password" type="password" formControlName="password" placeholder="Şifre: 123456"
+          [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
         @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
-          <small class="validation-error">Şifre alanı zorunludur.</small>
+        <small class="validation-error">Şifre alanı zorunludur.</small>
         }
         @if (loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched) {
-          <small class="validation-error">Şifre en az 6 karakter olmalıdır.</small>
+        <small class="validation-error">Şifre en az 6 karakter olmalıdır.</small>
         }
       </div>
 
-      <button type="submit" class="login-button" [disabled]="isLoading()">
-        @if (isLoading()) {
-          <div class="spinner"></div>
-          <span>Giriş Yapılıyor...</span>
+      <button type="submit" class="login-button" [disabled]="login.loading()">
+        @if (login.loading()) {
+        <div class="spinner"></div>
+        <span>Giriş Yapılıyor...</span>
         } @else {
-          <span>Giriş Yap</span>
+        <span>Giriş Yap</span>
         }
       </button>
     </form>

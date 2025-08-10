@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 import { JwtService } from "./jwt.service";
 import { map, distinctUntilChanged, tap, shareReplay } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
-import { User } from "../user.model";
+import { User } from "../auth.model";
 import { Router } from "@angular/router";
 
 @Injectable({ providedIn: "root" })

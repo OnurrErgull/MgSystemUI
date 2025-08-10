@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
 import { UserService } from "../../../core/auth/services/user.service";
-import { User } from "../../../core/auth/user.model";
+import { User } from "../../../core/auth/auth.model";
 import { RouterLink } from "@angular/router";
 import { map } from "rxjs/operators";
 import { Comment } from "../models/comment.model";

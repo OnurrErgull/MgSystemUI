@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { User } from "../../../../core/auth/user.model";
+import { User } from "../../../../core/auth/auth.model";
 import { Article } from "../../models/article.model";
 import { ArticlesService } from "../../services/articles.service";
 import { CommentsService } from "../../services/comments.service";

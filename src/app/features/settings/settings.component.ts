@@ -6,7 +6,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import { User } from "../../core/auth/user.model";
+import { User } from "../../core/auth/auth.model";
 import { UserService } from "../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../shared/components/list-errors.component";
 import { Errors } from "../../core/models/errors.model";
