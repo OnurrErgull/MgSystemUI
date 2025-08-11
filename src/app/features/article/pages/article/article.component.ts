@@ -15,7 +15,7 @@ import { catchError } from "rxjs/operators";
 import { combineLatest, throwError } from "rxjs";
 import { Comment } from "../../models/comment.model";
 import { IfAuthenticatedDirective } from "../../../../core/auth/if-authenticated.directive";
-import { Errors } from "../../../../core/models/errors.model";
+// import { Errors } from "../../../../core/models/errors.model";
 import { Profile } from "../../../profile/models/profile.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { FavoriteButtonComponent } from "../../components/favorite-button.component";
@@ -46,7 +46,7 @@ export default class ArticleComponent implements OnInit {
   canModify: boolean = false;
 
   commentControl = new FormControl<string>("", { nonNullable: true });
-  commentFormErrors: Errors | null = null;
+  commentFormErrors: any | null = null;
 
   isSubmitting = false;
   isDeleting = false;

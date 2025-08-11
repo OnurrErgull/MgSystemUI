@@ -7,7 +7,7 @@ import {
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { combineLatest } from "rxjs";
-import { Errors } from "../../../../core/models/errors.model";
+// import { Errors } from "../../../../core/models/errors.model";
 import { ArticlesService } from "../../services/articles.service";
 import { UserService } from "../../../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../../../shared/components/list-errors.component";
@@ -33,7 +33,7 @@ export default class EditorComponent implements OnInit {
   });
   tagField = new FormControl<string>("", { nonNullable: true });
 
-  errors: Errors | null = null;
+  errors: any | null = null;
   isSubmitting = false;
   destroyRef = inject(DestroyRef);
 

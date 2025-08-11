@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { environment } from '@src/environments/environment';
 import { Observable, map, retry, timeout } from 'rxjs';
 
 export type ApiEnvelope<T> = {
-  success: boolean;
+  isSuccess: boolean;
   message?: string | null;
   data?: T | null;
-  errors?: string[] | null;
+  error?: string | null;
 };
 
 export type RequestOptions = {
@@ -17,7 +18,7 @@ export type RequestOptions = {
   idempotencyKey?: string; // POST tekrarı için güvenli anahtar
 };
 
-const API_BASE_URL = '/api'; // istersen env’den oku
+const API_BASE_URL = environment.apiUrl;
 
 @Injectable({ providedIn: 'root' })
 export class ApiClient {
@@ -45,8 +46,8 @@ export class ApiClient {
       timeout(to),
       retry(rc),
       map((res) => {
-        if (!res?.success) {
-          throw { message: res?.message ?? 'API error', details: res?.errors };
+        if (!res?.isSuccess) {
+          throw { message: res?.message ?? 'API error', details: res?.error };
         }
         return res.data as T;
       })

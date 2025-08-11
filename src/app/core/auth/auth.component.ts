@@ -50,6 +50,7 @@ export class AuthComponent {
         return this.loadProfile().then(() => this.router.navigateByUrl('/'));
       })
       .catch((err) => {
+        debugger
         this.errorMessage.set(err?.message ?? 'Login failed');
       });
   }

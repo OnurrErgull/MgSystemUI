@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 import { User } from "../../core/auth/auth.model";
 import { UserService } from "../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../shared/components/list-errors.component";
-import { Errors } from "../../core/models/errors.model";
+// import { Errors } from "../../core/models/errors.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 interface SettingsForm {
@@ -37,7 +37,7 @@ export default class SettingsComponent implements OnInit {
       nonNullable: true,
     }),
   });
-  errors: Errors | null = null;
+  // errors: Errors | null = null;
   isSubmitting = false;
   destroyRef = inject(DestroyRef);
 
@@ -47,10 +47,16 @@ export default class SettingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.settingsForm.patchValue(
-      this.userService.getCurrentUser() as Partial<User>,
-    );
-  }
+  // const u = this.userService.getCurrentUser();
+
+  // this.settingsForm.patchValue({
+  //   image: u?.image ?? "",          // null/undefined → ""
+  //   username: u?.username ?? "",
+  //   bio: u?.bio ?? "",
+  //   email: u?.email ?? "",
+  //   // password’u başlangıçta boş bırakmak genelde daha iyi
+  // });
+}
 
   logout(): void {
     this.userService.logout();
@@ -66,7 +72,7 @@ export default class SettingsComponent implements OnInit {
         next: ({ user }) =>
           void this.router.navigate(["/profile/", user.username]),
         error: (err) => {
-          this.errors = err;
+          // this.errors = err;
           this.isSubmitting = false;
         },
       });

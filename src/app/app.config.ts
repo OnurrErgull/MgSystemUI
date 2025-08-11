@@ -8,29 +8,23 @@ import { provideRouter } from "@angular/router";
 import { routes } from "./app.routes";
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { JwtService } from "./core/auth/services/jwt.service";
-import { UserService } from "./core/auth/services/user.service";
-import { apiInterceptor } from "./core/interceptors/api.interceptor";
+import { AuthService } from "./core/auth/services/auth.service";
+// import { apiInterceptor } from "./core/interceptors/api.interceptor";
 import { tokenInterceptor } from "./core/interceptors/token.interceptor";
 import { errorInterceptor } from "./core/interceptors/error.interceptor";
 import { EMPTY } from "rxjs";
 import { authInterceptor } from "./core/interceptors/auth.interceptor";
 
-export function initAuth(jwtService: JwtService, userService: UserService) {
-  return () => (jwtService.getToken() ? userService.getCurrentUser() : EMPTY);
+export function initAuth(auth: AuthService) {
+  return () => (auth.isLoggedIn() ? auth.me() : EMPTY);
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(
-      // withInterceptors([apiInterceptor, tokenInterceptor, errorInterceptor]),
-      withInterceptors([authInterceptor, errorInterceptor]),
-
-    ),
-    provideAppInitializer(() => {
-      const initializerFn = initAuth(inject(JwtService), inject(UserService));
-      return initializerFn();
-    }),
+    provideRouter(routes),
+    provideHttpClient(withInterceptors([authInterceptor, tokenInterceptor, errorInterceptor])),
+    provideAppInitializer(() => initAuth(inject(AuthService))()),
   ],
 };
 

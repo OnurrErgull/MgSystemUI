@@ -86,46 +86,126 @@ export class AuthService {
 
 
 
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiClient } from '../../http/api-client';
+// import { inject, Injectable } from '@angular/core';
+// import { Observable } from 'rxjs';
+// import { ApiClient } from '../../http/api-client';
 
-export type LoginInput  = { username: string; password: string };
-export type LoginOutput = { token: string };
-export type Profile     = { id: number; username: string; email: string };
+// export type LoginInput  = { username: string; password: string };
+// export type LoginOutput = { token: string };
+// export type Profile     = { id: number; username: string; email: string };
 
-@Injectable({ providedIn: 'root' })
+// @Injectable({ providedIn: 'root' })
+// export class AuthService {
+//   private api = inject(ApiClient);
+//   private TOKEN_KEY = 'token'; // <— interceptor da bunu okuyor olmalı
+
+//   // POST /auth/login
+//   login(credentials: LoginInput): Observable<LoginOutput> {
+//     return this.api.post<LoginOutput>('auth/LoginCheck', credentials, {
+//       idempotencyKey: crypto.randomUUID(),
+//       retryCount: 0,
+//     });
+//   }
+
+//   // GET /auth/me
+//   me(): Observable<Profile> {
+//     return this.api.get<Profile>('/auth/me');
+//   }
+
+//   // Token helpers
+//   saveToken(token: string): void {
+//     localStorage.setItem(this.TOKEN_KEY, token);
+//   }
+
+//   getToken(): string | null {
+//     return localStorage.getItem(this.TOKEN_KEY);
+//   }
+
+//   isLoggedIn(): boolean {
+//     return !!this.getToken();
+//   }
+
+//   logout(): void {
+//     localStorage.removeItem(this.TOKEN_KEY);
+//   }
+// }
+
+
+
+
+import { Injectable } from "@angular/core";
+import { Observable, BehaviorSubject } from "rxjs";
+
+import { JwtService } from "./jwt.service";
+import { map, distinctUntilChanged, tap, shareReplay } from "rxjs/operators";
+import { HttpClient } from "@angular/common/http";
+import { User } from "../auth.model";
+import { Router } from "@angular/router";
+
+@Injectable({ providedIn: "root" })
 export class AuthService {
-  private api = inject(ApiClient);
-  private TOKEN_KEY = 'token'; // <— interceptor da bunu okuyor olmalı
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser = this.currentUserSubject
+    .asObservable()
+    .pipe(distinctUntilChanged());
 
-  // POST /auth/login
-  login(credentials: LoginInput): Observable<LoginOutput> {
-    return this.api.post<LoginOutput>('/auth/login', credentials, {
-      idempotencyKey: crypto.randomUUID(),
-      retryCount: 0,
-    });
+  public isAuthenticated = this.currentUser.pipe(map((user) => !!user));
+
+  constructor(
+    private readonly http: HttpClient,
+    private readonly jwtService: JwtService,
+    private readonly router: Router,
+  ) {}
+
+  login(credentials: {
+    email: string;
+    password: string;
+  }): Observable<{ user: User }> {
+    return this.http
+      .post<{ user: User }>("auth/LoginCheck", { user: credentials })
+      .pipe(tap(({ user }) => this.setAuth(user)));
   }
 
-  // GET /auth/me
-  me(): Observable<Profile> {
-    return this.api.get<Profile>('/auth/me');
-  }
-
-  // Token helpers
-  saveToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+  register(credentials: {
+    username: string;
+    email: string;
+    password: string;
+  }): Observable<{ user: User }> {
+    return this.http
+      .post<{ user: User }>("/users", { user: credentials })
+      .pipe(tap(({ user }) => this.setAuth(user)));
   }
 
   logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+    this.purgeAuth();
+    void this.router.navigate(["/"]);
+  }
+
+  getCurrentUser(): Observable<{ user: User }> {
+    return this.http.get<{ user: User }>("/user").pipe(
+      tap({
+        next: ({ user }) => this.setAuth(user),
+        error: () => this.purgeAuth(),
+      }),
+      shareReplay(1),
+    );
+  }
+
+  update(user: Partial<User>): Observable<{ user: User }> {
+    return this.http.put<{ user: User }>("/user", { user }).pipe(
+      tap(({ user }) => {
+        this.currentUserSubject.next(user);
+      }),
+    );
+  }
+
+  setAuth(user: User): void {
+    this.jwtService.saveToken(user.token);
+    this.currentUserSubject.next(user);
+  }
+
+  purgeAuth(): void {
+    this.jwtService.destroyToken();
+    this.currentUserSubject.next(null);
   }
 }

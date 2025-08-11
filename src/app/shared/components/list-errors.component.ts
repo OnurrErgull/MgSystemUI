@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { Errors } from "../../core/models/errors.model";
+// import { Errors } from "../../core/models/errors.model";
 
 @Component({
   selector: "app-list-errors",
@@ -8,7 +8,7 @@ import { Errors } from "../../core/models/errors.model";
 export class ListErrorsComponent {
   errorList: string[] = [];
 
-  @Input() set errors(errorList: Errors | null) {
+  @Input() set errors(errorList: any | null) {
     this.errorList = errorList
       ? Object.keys(errorList.errors || {}).map(
           (key) => `${key} ${errorList.errors[key]}`,

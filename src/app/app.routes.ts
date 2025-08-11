@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
 import { inject } from "@angular/core";
-import { UserService } from "./core/auth/services/user.service";
 import { map } from "rxjs/operators";
+import { AuthService } from "./core/auth/services/auth.service";
 
 // export const routes: Routes = [
 //   {
@@ -61,16 +61,21 @@ import { map } from "rxjs/operators";
 
 
 export const routes: Routes = [
-    {
-        path: '',
-        redirectTo: 'login', // Uygulama açıldığında doğrudan login'e yönlendir
-        pathMatch: 'full'
-    },
-    {
+  {
+    path: "",
+    loadComponent: () => import("./features/article/pages/home/home.component"),
+    canActivate: [() => inject(AuthService).isLoggedIn()]
+  },
+  {
+    path: '',
+    redirectTo: 'login', // Uygulama açıldığında doğrudan login'e yönlendir
+    pathMatch: 'full'
+  },
+  {
     path: "login",
     loadComponent: () => import("./core/auth/auth.component").then(m => m.AuthComponent),
     canActivate: [
-      () => inject(UserService).isAuthenticated.pipe(map((isAuth) => !isAuth)),
+      () => inject(AuthService).isAuthenticated.pipe(map((isAuth) => !isAuth)),
     ],
-}
+  }
 ];

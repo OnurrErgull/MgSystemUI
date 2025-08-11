@@ -4,17 +4,17 @@ import { ArticleListConfig } from "../models/article-list-config.model";
 import { Article } from "../models/article.model";
 import { ArticlePreviewComponent } from "./article-preview.component";
 import { NgClass } from "@angular/common";
-import { LoadingState } from "../../../core/models/loading-state.model";
+// import { LoadingState } from "../../../core/models/loading-state.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-article-list",
   template: `
-    @if (loading === LoadingState.LOADING) {
+    @if (loading === "LoadingState.LOADING") { 
       <div class="article-preview">Loading articles...</div>
     }
 
-    @if (loading === LoadingState.LOADED) {
+    @if (loading === "LoadingState.LOADED") {
       @for (article of results; track article.slug) {
         <app-article-preview [article]="article" />
       } @empty {
@@ -49,8 +49,8 @@ export class ArticleListComponent {
   results: Article[] = [];
   currentPage = 1;
   totalPages: Array<number> = [];
-  loading = LoadingState.NOT_LOADED;
-  LoadingState = LoadingState;
+  loading:any = "";//LoadingState.NOT_LOADED;
+  LoadingState = "";//LoadingState;
   destroyRef = inject(DestroyRef);
 
   @Input() limit!: number;
@@ -71,7 +71,7 @@ export class ArticleListComponent {
   }
 
   runQuery() {
-    this.loading = LoadingState.LOADING;
+    this.loading = "";//LoadingState.LOADING;
     this.results = [];
 
     // Create limit and offset filter (if necessary)
@@ -84,7 +84,7 @@ export class ArticleListComponent {
       .query(this.query)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
-        this.loading = LoadingState.LOADED;
+        this.loading = "";//LoadingState.LOADED;
         this.results = data.articles;
 
         // Used from http://www.jstips.co/en/create-range-0...n-easily-using-one-line/
