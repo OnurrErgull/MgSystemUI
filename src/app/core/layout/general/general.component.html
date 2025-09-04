@@ -1,0 +1,24 @@
+<!-- <app-layout-header />
+
+<router-outlet></router-outlet>
+
+<app-layout-footer /> -->
+
+
+<div class="shell" [class.is-collapsed]="(sidenav.collapsed$ | async) ?? false">
+  <aside class="sidebar">
+    <app-sidebar />
+  </aside>
+
+  <header class="header">
+    <app-header />
+  </header>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="footer">
+    <app-footer />
+  </footer>
+</div>

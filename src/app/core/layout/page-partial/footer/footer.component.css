@@ -1,0 +1,9 @@
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.sep { opacity: .6; }

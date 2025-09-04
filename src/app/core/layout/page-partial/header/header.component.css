@@ -1,0 +1,165 @@
+/* ===========================
+   Header (header.component.css)
+   =========================== */
+
+.wrap {
+  min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  /* Header arka planı AppLayout'ta; burada ince alt çizgi ve hafif gölgeyle
+     içerik ayrımı kuvvetlendiriyoruz */
+  position: relative;
+}
+
+.wrap::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 1px;
+  background: var(--border);
+  opacity: .85;
+}
+
+/* ——— Brand ——— */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand .logo {
+  display: grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: 10px;
+  background: var(--brand);
+  box-shadow: var(--shadow);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+.brand .name {
+  font-weight: 700;
+  letter-spacing: .25px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+}
+
+/* ——— Flexible boşluk ——— */
+.grow { flex: 1; min-width: 12px; }
+
+/* ——— Sağ aksiyonlar ——— */
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* ——— Arama ——— */
+.search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.search::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 10px;
+  margin: auto 0;
+  inline-size: 16px;
+  block-size: 16px;
+  opacity: .7;
+  /* inline svg ikon */
+  background: no-repeat center / 16px 16px
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23aab0c0' d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.49L21.49 20zM9.5 14A4.5 4.5 0 1 1 14 9.5A4.505 4.505 0 0 1 9.5 14'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.search input {
+  inline-size: clamp(160px, 26vw, 280px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 9px 12px 9px 34px; /* solda ikon için boşluk */
+  border-radius: 10px;
+  outline: none;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.search input::placeholder { color: var(--muted); opacity: .85; }
+
+.search:focus-within input {
+  border-color: color-mix(in oklab, var(--brand) 60%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 28%, transparent);
+  background: color-mix(in oklab, var(--card) 85%, black);
+}
+
+/* ——— Bildirim butonu (icon-btn sınıfını daha önce verdik) ——— */
+.icon-btn .dot {
+  position: absolute;
+  inset: 7px 7px auto auto;
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 999px;
+  background: #ef4444;
+}
+
+/* ——— Kullanıcı ——— */
+.user {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 4px 6px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: background .18s ease, border-color .18s ease;
+}
+
+.user:hover {
+  background: #0e1729;
+  border-color: var(--border);
+}
+
+.user img {
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+}
+
+.user span {
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: .2px;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ——— Responsive ——— */
+@media (max-width: 1024px) {
+  .brand .name { display: none; }
+  .search input { inline-size: clamp(120px, 34vw, 220px); }
+}
+
+@media (max-width: 640px) {
+  .search { display: none; }           /* mobilde aramayı sakla (isteğe bağlı) */
+  .user span { display: none; }        /* sadece avatar kalsın */
+}
+
+/* ——— Hareket azaltma tercihi ——— */
+@media (prefers-reduced-motion: reduce) {
+  .search input,
+  .user { transition: none; }
+}

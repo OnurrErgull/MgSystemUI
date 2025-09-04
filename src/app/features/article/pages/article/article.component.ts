@@ -1,11 +1,11 @@
 import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { User } from "../../../../core/auth/auth.model";
+// import { User } from "../../../../core/auth/auth.model";
 import { Article } from "../../models/article.model";
 import { ArticlesService } from "../../services/articles.service";
 import { CommentsService } from "../../services/comments.service";
-import { UserService } from "../../../../core/auth/services/user.service";
+// import { UserService } from "../../../../core/auth/services/user.service";
 import { ArticleMetaComponent } from "../../components/article-meta.component";
 import { AsyncPipe, NgClass } from "@angular/common";
 import { MarkdownPipe } from "../../../../shared/pipes/markdown.pipe";
@@ -19,7 +19,7 @@ import { IfAuthenticatedDirective } from "../../../../core/auth/if-authenticated
 import { Profile } from "../../../profile/models/profile.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { FavoriteButtonComponent } from "../../components/favorite-button.component";
-import { FollowButtonComponent } from "../../../profile/components/follow-button.component";
+// import { FollowButtonComponent } from "../../../profile/components/follow-button.component";
 
 @Component({
   selector: "app-article-page",
@@ -28,20 +28,20 @@ import { FollowButtonComponent } from "../../../profile/components/follow-button
     ArticleMetaComponent,
     RouterLink,
     NgClass,
-    FollowButtonComponent,
+    // FollowButtonComponent,k
     FavoriteButtonComponent,
     MarkdownPipe,
     AsyncPipe,
-    ListErrorsComponent,
+    // ListErrorsComponent,
     FormsModule,
     ArticleCommentComponent,
     ReactiveFormsModule,
-    IfAuthenticatedDirective,
+    // IfAuthenticatedDirective,
   ],
 })
 export default class ArticleComponent implements OnInit {
   article!: Article;
-  currentUser!: User | null;
+  // currentUser!: User | null;
   comments: Comment[] = [];
   canModify: boolean = false;
 
@@ -57,29 +57,29 @@ export default class ArticleComponent implements OnInit {
     private readonly articleService: ArticlesService,
     private readonly commentsService: CommentsService,
     private readonly router: Router,
-    private readonly userService: UserService,
+    // private readonly userService: UserService,
   ) {}
 
   ngOnInit(): void {
     const slug = this.route.snapshot.params["slug"];
-    combineLatest([
-      this.articleService.get(slug),
-      this.commentsService.getAll(slug),
-      this.userService.currentUser,
-    ])
-      .pipe(
-        catchError((err) => {
-          void this.router.navigate(["/"]);
-          return throwError(() => err);
-        }),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe(([article, comments, currentUser]) => {
-        this.article = article;
-        this.comments = comments;
-        this.currentUser = currentUser;
-        this.canModify = currentUser?.username === article.author.username;
-      });
+    // combineLatest([
+    //   this.articleService.get(slug),
+    //   this.commentsService.getAll(slug),
+    //   // this.userService.currentUser,
+    // ])
+    //   .pipe(
+    //     catchError((err) => {
+    //       void this.router.navigate(["/"]);
+    //       return throwError(() => err);
+    //     }),
+    //     takeUntilDestroyed(this.destroyRef),
+    //   )
+    //   .subscribe(([article, comments, currentUser]) => {
+    //     this.article = article;
+    //     this.comments = comments;
+    //     this.currentUser = currentUser;
+    //     this.canModify = currentUser?.username === article.author.username;
+    //   });
   }
 
   onToggleFavorite(favorited: boolean): void {

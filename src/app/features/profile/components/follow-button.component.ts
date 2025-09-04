@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 import { switchMap } from "rxjs/operators";
 import { EMPTY } from "rxjs";
 import { ProfileService } from "../services/profile.service";
-import { UserService } from "../../../core/auth/services/user.service";
+// import { UserService } from "../../../core/auth/services/user.service";
 import { Profile } from "../models/profile.model";
 import { NgClass } from "@angular/common";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -43,34 +43,34 @@ export class FollowButtonComponent {
   constructor(
     private readonly profileService: ProfileService,
     private readonly router: Router,
-    private readonly userService: UserService,
+    // private readonly userService: UserService,
   ) {}
 
   toggleFollowing(): void {
     this.isSubmitting = true;
 
-    this.userService.isAuthenticated
-      .pipe(
-        switchMap((isAuthenticated: boolean) => {
-          if (!isAuthenticated) {
-            void this.router.navigate(["/login"]);
-            return EMPTY;
-          }
+    // this.userService.isAuthenticated
+    //   .pipe(
+    //     switchMap((isAuthenticated: boolean) => {
+    //       if (!isAuthenticated) {
+    //         void this.router.navigate(["/login"]);
+    //         return EMPTY;
+    //       }
 
-          if (!this.profile.following) {
-            return this.profileService.follow(this.profile.username);
-          } else {
-            return this.profileService.unfollow(this.profile.username);
-          }
-        }),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe({
-        next: (profile) => {
-          this.isSubmitting = false;
-          this.toggle.emit(profile);
-        },
-        error: () => (this.isSubmitting = false),
-      });
+    //       if (!this.profile.following) {
+    //         return this.profileService.follow(this.profile.username);
+    //       } else {
+    //         return this.profileService.unfollow(this.profile.username);
+    //       }
+    //     }),
+    //     takeUntilDestroyed(this.destroyRef),
+    //   )
+    //   .subscribe({
+    //     // next: (profile) => {
+    //     //   this.isSubmitting = false;
+    //     //   this.toggle.emit(profile);
+    //     // },
+    //     // error: () => (this.isSubmitting = false),
+    //   });
   }
 }

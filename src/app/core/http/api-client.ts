@@ -55,6 +55,8 @@ export class ApiClient {
   }
 
   post<T>(url: string, body?: any, opt?: RequestOptions) {
+    console.log('[HTTP]',  url);
+
     return this.handle<T>(this.http.post<ApiEnvelope<T>>(`${API_BASE_URL}${url}`, body, this.options(opt)), opt);
   }
 

@@ -6,8 +6,8 @@ import {
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import { User } from "../../core/auth/auth.model";
-import { UserService } from "../../core/auth/services/user.service";
+// import { User } from "../../core/auth/auth.model";
+// import { UserService } from "../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../shared/components/list-errors.component";
 // import { Errors } from "../../core/models/errors.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -23,10 +23,10 @@ interface SettingsForm {
 @Component({
   selector: "app-settings-page",
   templateUrl: "./settings.component.html",
-  imports: [ListErrorsComponent, ReactiveFormsModule],
+  imports: [ ReactiveFormsModule],
 })
 export default class SettingsComponent implements OnInit {
-  user!: User;
+  // user!: User;
   settingsForm = new FormGroup<SettingsForm>({
     image: new FormControl("", { nonNullable: true }),
     username: new FormControl("", { nonNullable: true }),
@@ -43,7 +43,7 @@ export default class SettingsComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly userService: UserService,
+    // private readonly userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -59,22 +59,22 @@ export default class SettingsComponent implements OnInit {
 }
 
   logout(): void {
-    this.userService.logout();
+    // this.userService.logout();
   }
 
   submitForm() {
     this.isSubmitting = true;
 
-    this.userService
-      .update(this.settingsForm.value)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: ({ user }) =>
-          void this.router.navigate(["/profile/", user.username]),
-        error: (err) => {
-          // this.errors = err;
-          this.isSubmitting = false;
-        },
-      });
+    // this.userService
+    //   .update(this.settingsForm.value)
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe({
+    //     next: ({ user }) =>
+    //       void this.router.navigate(["/profile/", user.username]),
+    //     error: (err) => {
+    //       // this.errors = err;
+    //       this.isSubmitting = false;
+    //     },
+    //   });
   }
 }

@@ -24,11 +24,11 @@
             </span>
           } @else {
             <span>
-              <app-follow-button
+              <!-- <app-follow-button
                 [profile]="article.author"
                 (toggle)="toggleFollowing($event)"
               >
-              </app-follow-button>
+              </app-follow-button> -->
 
               <app-favorite-button
                 [article]="article"
@@ -81,10 +81,10 @@
             </span>
           } @else {
             <span>
-              <app-follow-button
+              <!-- <app-follow-button
                 [profile]="article.author"
                 (toggle)="toggleFollowing($event)"
-              />
+              /> -->
 
               <app-favorite-button
                 [article]="article"
@@ -100,7 +100,7 @@
 
       <div class="row">
         <div class="col-xs-12 col-md-8 offset-md-2">
-          <div *ifAuthenticated="true">
+          <!-- <div *ifAuthenticated="true">
             <app-list-errors [errors]="commentFormErrors" />
             <form class="card comment-form" (ngSubmit)="addComment()">
               <fieldset [disabled]="isSubmitting">
@@ -125,13 +125,13 @@
                 </div>
               </fieldset>
             </form>
-          </div>
+          </div> -->
 
-          <div *ifAuthenticated="false">
+          <!-- <div *ifAuthenticated="false">
             <a [routerLink]="['/login']">Sign in</a> or
             <a [routerLink]="['/register']">sign up</a> to add comments on this
             article.
-          </div>
+          </div> -->
 
           @for (comment of comments; track comment) {
             <app-article-comment

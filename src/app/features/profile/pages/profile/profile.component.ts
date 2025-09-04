@@ -8,7 +8,7 @@ import {
 } from "@angular/router";
 import { catchError, switchMap } from "rxjs/operators";
 import { combineLatest, of, throwError } from "rxjs";
-import { UserService } from "../../../../core/auth/services/user.service";
+// import { UserService } from "../../../../core/auth/services/user.service";
 import { Profile } from "../../models/profile.model";
 import { ProfileService } from "../../services/profile.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -18,11 +18,11 @@ import { FollowButtonComponent } from "../../components/follow-button.component"
   selector: "app-profile-page",
   templateUrl: "./profile.component.html",
   imports: [
-    FollowButtonComponent,
+    // FollowButtonComponent,
     RouterLink,
     RouterLinkActive,
     RouterOutlet,
-    FollowButtonComponent,
+    // FollowButtonComponent,
   ],
 })
 export class ProfileComponent implements OnInit {
@@ -33,27 +33,27 @@ export class ProfileComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly userService: UserService,
+    // private readonly userService: UserService,
     private readonly profileService: ProfileService,
   ) {}
 
   ngOnInit() {
-    this.profileService
-      .get(this.route.snapshot.params["username"])
-      .pipe(
-        catchError((error) => {
-          void this.router.navigate(["/"]);
-          return throwError(() => error);
-        }),
-        switchMap((profile) => {
-          return combineLatest([of(profile), this.userService.currentUser]);
-        }),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe(([profile, user]) => {
-        this.profile = profile;
-        this.isUser = profile.username === user?.username;
-      });
+    // this.profileService
+    //   .get(this.route.snapshot.params["username"])
+    //   .pipe(
+    //     catchError((error) => {
+    //       void this.router.navigate(["/"]);
+    //       return throwError(() => error);
+    //     }),
+    //     switchMap((profile) => {
+    //       return combineLatest([of(profile), this.userService.currentUser]);
+    //     }),
+    //     takeUntilDestroyed(this.destroyRef),
+    //   )
+    //   .subscribe(([profile, user]) => {
+    //     this.profile = profile;
+    //     this.isUser = profile.username === user?.username;
+    //   });
   }
 
   onToggleFollowing(profile: Profile) {

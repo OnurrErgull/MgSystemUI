@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { combineLatest } from "rxjs";
 // import { Errors } from "../../../../core/models/errors.model";
 import { ArticlesService } from "../../services/articles.service";
-import { UserService } from "../../../../core/auth/services/user.service";
+// import { UserService } from "../../../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../../../shared/components/list-errors.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
@@ -41,24 +41,24 @@ export default class EditorComponent implements OnInit {
     private readonly articleService: ArticlesService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly userService: UserService,
+    // private readonly userService: UserService,
   ) {}
 
   ngOnInit() {
     if (this.route.snapshot.params["slug"]) {
-      combineLatest([
-        this.articleService.get(this.route.snapshot.params["slug"]),
-        this.userService.getCurrentUser(),
-      ])
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(([article, { user }]) => {
-          if (user.username === article.author.username) {
-            this.tagList = article.tagList;
-            this.articleForm.patchValue(article);
-          } else {
-            void this.router.navigate(["/"]);
-          }
-        });
+      // combineLatest([
+      //   this.articleService.get(this.route.snapshot.params["slug"]),
+      //   this.userService.getCurrentUser(),
+      // ])
+      //   .pipe(takeUntilDestroyed(this.destroyRef))
+      //   .subscribe(([article, { user }]) => {
+      //     if (user.username === article.author.username) {
+      //       this.tagList = article.tagList;
+      //       this.articleForm.patchValue(article);
+      //     } else {
+      //       void this.router.navigate(["/"]);
+      //     }
+      //   });
     }
   }
 

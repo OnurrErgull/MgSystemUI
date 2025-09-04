@@ -5,7 +5,7 @@ import { ArticleListConfig } from "../../models/article-list-config.model";
 import { NgClass } from "@angular/common";
 import { ArticleListComponent } from "../../components/article-list.component";
 import { tap } from "rxjs/operators";
-import { UserService } from "../../../../core/auth/services/user.service";
+// import { UserService } from "../../../../core/auth/services/user.service";
 import { RxLet } from "@rx-angular/template/let";
 import { IfAuthenticatedDirective } from "../../../../core/auth/if-authenticated.directive";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -30,24 +30,24 @@ export default class HomeComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly userService: UserService,
+    // private readonly userService: UserService,
   ) {}
 
   ngOnInit(): void {
-    this.userService.isAuthenticated
-      .pipe(
-        tap((isAuthenticated) => {
-          if (isAuthenticated) {
-            this.setListTo("feed");
-          } else {
-            this.setListTo("all");
-          }
-        }),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe(
-        (isAuthenticated: boolean) => (this.isAuthenticated = isAuthenticated),
-      );
+    // this.userService.isAuthenticated
+    //   .pipe(
+    //     tap((isAuthenticated) => {
+    //       if (isAuthenticated) {
+    //         this.setListTo("feed");
+    //       } else {
+    //         this.setListTo("all");
+    //       }
+    //     }),
+    //     takeUntilDestroyed(this.destroyRef),
+    //   )
+    //   .subscribe(
+    //     (isAuthenticated: boolean) => (this.isAuthenticated = isAuthenticated),
+    //   );
   }
 
   setListTo(type: string = "", filters: Object = {}): void {
